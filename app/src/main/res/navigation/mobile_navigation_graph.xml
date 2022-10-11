@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_graph"
+    app:startDestination="@id/outletLocationFragment">
+
+    <fragment
+        android:id="@+id/outletLocationFragment"
+        android:name="com.optimum.optimumreport.ui.OutletLocationFragment"
+        android:label="fragment_outlet_location"
+        tools:layout="@layout/fragment_outlet_location">
+        <action
+            android:id="@+id/action_outletLocationFragment_to_saleReportFragment"
+            app:destination="@id/saleReportFragment">
+            <argument
+                android:name="locationCode"
+                android:defaultValue=""
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/saleReportFragment"
+        android:name="com.optimum.optimumreport.ui.salereport.SaleReportFragment"
+        android:label="fragment_sale_report"
+        tools:layout="@layout/fragment_sale_report">
+        <argument
+            android:name="locationCode"
+            android:defaultValue=""
+            app:argType="string" />
+
+    </fragment>
+
+</navigation>

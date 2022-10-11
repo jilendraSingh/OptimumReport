@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "510503913925",
+    "project_id": "optimum-report",
+    "storage_bucket": "optimum-report.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510503913925:android:ffef3f9fdf3a07d03a63ac",
+        "android_client_info": {
+          "package_name": "com.optimum.optimumreport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "510503913925-qhab72jaj61ef1eqg9ql8ra83mvivqhh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPfYyu-xwyQz6otTqexdjG4SylPInm2PE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "510503913925-qhab72jaj61ef1eqg9ql8ra83mvivqhh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
