@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
         android:text="Report Type"
+        android:visibility="gone"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
         android:textStyle="bold"

@@ -4,6 +4,8 @@ package com.optimum.optimumreport
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -101,8 +103,8 @@ class MainActivity : AppCompatActivity() , OnItemClickListener {
             binding.rvOutletList.adapter = OutLetAdapter(data?.data!!.locations, this)
 
         } catch (e: Exception) {
-            Toast.makeText(this@MainActivity, e.printStackTrace().toString(), Toast.LENGTH_SHORT)
-                .show()
+            Log.e("optimum", "setUpData: "+e.printStackTrace() )
+
         }
 
     }
@@ -114,6 +116,7 @@ class MainActivity : AppCompatActivity() , OnItemClickListener {
         binding.rvReportTypeList.isNestedScrollingEnabled = true
         binding.rvReportTypeList.adapter =
             ReportListAdapter(this@MainActivity, data!!.data, locationCodeData)
+        binding.reportType.visibility= View.VISIBLE
 
     }
 

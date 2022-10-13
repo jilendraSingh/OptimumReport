@@ -229,23 +229,26 @@ class StockReportActivity : AppCompatActivity() {
 
 
         viewModel.getStockReport(jsonObject).observe(this@StockReportActivity) { response ->
-            when (response) {
-                is NetworkResult.Success -> {
-                    if (response.data!!.data.isNotEmpty()) {
-                        binding.rvStockReportList.layoutManager=LinearLayoutManager(this@StockReportActivity)
-                        binding.rvStockReportList.adapter=StockReportAdapter(response.data.data)
-                        binding.rvStockReportList.visibility=View.VISIBLE
-                    } else {
-                        Utility.showToast(this@StockReportActivity, "Data Not Found!")
-                        binding.progressCircular.visibility = View.GONE
-                        binding.rvStockReportList.visibility=View.GONE
+            try {
+                when (response) {
+                    is NetworkResult.Success -> {
+                        if (response.data!!.data.isNotEmpty()) {
+                            binding.rvStockReportList.layoutManager=LinearLayoutManager(this@StockReportActivity)
+                            binding.rvStockReportList.adapter=StockReportAdapter(response.data.data)
+                            binding.rvStockReportList.visibility=View.VISIBLE
+                        } else {
+                            Utility.showToast(this@StockReportActivity, "Data Not Found!")
+                            binding.progressCircular.visibility = View.GONE
+                            binding.rvStockReportList.visibility=View.GONE
+                        }
+                    }
+
+                    is NetworkResult.Error -> {
+                        Utility.showToast(this@StockReportActivity, response.message.toString())
                     }
                 }
+            }catch (e:Exception){Utility.showToast(this@StockReportActivity,e.printStackTrace().toString())}
 
-                is NetworkResult.Error -> {
-                    Utility.showToast(this@StockReportActivity, response.message.toString())
-                }
-            }
         }
     }
 

@@ -4,13 +4,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.FirebaseApp
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.JsonObject
 import com.optimum.optimumreport.databinding.ActivityLoginBinding
 import com.optimum.optimumreport.interfaces.OnInternetCheckListener
@@ -83,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
                 is NetworkResult.Error -> {
+                    Utility.showToast(this@LoginActivity, response.data!!.message)
                  }
             }
         }
