@@ -15,6 +15,7 @@ class CafePosRepositry(val apiInterface: ApiInterface) {
   suspend  fun getReport(userCode:String)=apiInterface.getReport(userCode)
   suspend  fun getDishHead()=apiInterface.getDishHead()
   suspend  fun stockItemsList(jsonObject: JsonObject)=apiInterface.stockItemsList(jsonObject)
+  suspend  fun getStockReport(jsonObject: JsonObject)=apiInterface.getStockReport(jsonObject)
 
 
 

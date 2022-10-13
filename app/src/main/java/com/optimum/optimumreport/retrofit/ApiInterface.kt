@@ -68,4 +68,12 @@ interface ApiInterface {
         @Body jsonObject: JsonObject
     ): Response<StockSelectItemModel>
 
+    @Headers("Content-Type: application/json")
+    @POST(URLConstant.URL_STOCK_ALL_ITEM_URL)
+    suspend fun getStockReport(
+        @Body jsonObject: JsonObject
+    ): Response<StockReportModel>
+
+
+
 }

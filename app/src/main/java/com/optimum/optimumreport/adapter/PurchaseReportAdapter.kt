@@ -3,6 +3,7 @@ package com.optimum.optimumreport.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.optimum.optimumreport.databinding.PurchaseReportLayoutAdapterBinding
 import com.optimum.optimumreport.databinding.SaleReportAdapterLayoutBinding
 import com.optimum.optimumreport.interfaces.OnItemClickListener
 import com.optimum.optimumreport.model.PurchaseReportModel
@@ -11,7 +12,7 @@ class PurchaseReportAdapter(
     val listOfSaleData: List<PurchaseReportModel.Data>,
     val listener: OnItemClickListener
 ) : RecyclerView.Adapter<PurchaseReportAdapter.MyViewHolder>() {
-    class MyViewHolder(val binding: SaleReportAdapterLayoutBinding) :
+    class MyViewHolder(val binding: PurchaseReportLayoutAdapterBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
@@ -20,7 +21,7 @@ class PurchaseReportAdapter(
     ): MyViewHolder {
 
         return MyViewHolder(
-            SaleReportAdapterLayoutBinding.inflate(
+            PurchaseReportLayoutAdapterBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -31,7 +32,6 @@ class PurchaseReportAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item: PurchaseReportModel.Data = listOfSaleData[position]
         holder.binding.tvDate.text = item.sBlDate
-        holder.binding.tvTime.text = item.bldate
         holder.binding.tvBillAmount.text = item.blno.toString()
         holder.binding.tvBillNo.text = item.billamt.toString()
 

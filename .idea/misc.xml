@@ -23,9 +23,11 @@
         <entry key="..\:/CafePOSReport/app/src/main/res/layout/fragment_sale_report_detail.xml" value="0.16292134831460675" />
         <entry key="..\:/CafePOSReport/app/src/main/res/layout/no_internet_connection_dialog.xml" value="0.25" />
         <entry key="..\:/CafePOSReport/app/src/main/res/layout/outlet_adapter_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/CafePOSReport/app/src/main/res/layout/purchase_report_layout_adapter.xml" value="0.203125" />
         <entry key="..\:/CafePOSReport/app/src/main/res/layout/report_list_item.xml" value="0.47912524850894633" />
         <entry key="..\:/CafePOSReport/app/src/main/res/layout/sale_report_adapter_layout.xml" value="0.4540337711069418" />
         <entry key="..\:/CafePOSReport/app/src/main/res/layout/sale_report_detail_layout.xml" value="0.33" />
+        <entry key="..\:/CafePOSReport/app/src/main/res/layout/stock_report_adapter_item.xml" value="0.22" />
       </map>
     </option>
   </component>

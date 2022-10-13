@@ -143,7 +143,7 @@ class PurchaseReportActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun updateDateInView() {
-        val myFormat = "yyyy-MM-dd" // mention the format you need
+        val myFormat = "yyyy-MM-dd"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
 
         if (isFromDate) {

@@ -9,5 +9,6 @@ object URLConstant {
 
      const val URL_PURCHASE_REPORT_URL="Purchase/getpurchases"
      const val URL_STOCK_ITEM_URL="Master/getrawmas"
+     const val URL_STOCK_ALL_ITEM_URL="Stock"
 
 }

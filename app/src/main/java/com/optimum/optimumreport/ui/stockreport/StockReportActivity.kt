@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.optimum.optimumreport.databinding.ActivityStockReportBinding
 import com.optimum.optimumreport.interfaces.OnInternetCheckListener
 import com.optimum.optimumreport.model.DishHeadModel
@@ -18,6 +19,7 @@ import com.optimum.optimumreport.utility.NetworkResult
 import com.optimum.optimumreport.utility.Utility
 import com.optimum.optimumreport.viewmodel.CafePosViewModel
 import com.google.gson.JsonObject
+import com.optimum.optimumreport.adapter.StockReportAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,9 +34,12 @@ class StockReportActivity : AppCompatActivity() {
     val dishheadArray=ArrayList<String>()
     val dishheadCodeArray=ArrayList<Int>()
     var dishHeadCode=0
+    var locationCode=""
 
     val rawDescription=ArrayList<String>()
-    val rawCode=ArrayList<String>()
+    val rawCodeList=ArrayList<String>()
+    var rawCode=""
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,13 +47,13 @@ class StockReportActivity : AppCompatActivity() {
         binding = ActivityStockReportBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        locationCode=intent.getStringExtra("LOCATION_CODE").toString()
+
         binding.include.tvTitle.text = "Stock Report"
         val myFormat = "yyyy-MM-dd" // mention the format you need
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         binding.tvFromDate.text = sdf.format(cal.getTime())
         binding.tvTodate.text = sdf.format(cal.getTime())
-
-
 
         viewModel = ViewModelProvider(this@StockReportActivity)[CafePosViewModel::class.java]
 
@@ -96,22 +101,19 @@ class StockReportActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(rawCode.size!=0){
-                    Log.i("CafeReport", "rawCode: ="+ rawCode[position])
+                if(rawCodeList.size!=0){
+                    Log.i("CafeReport", "rawCode: ="+ rawCodeList[position])
+                    rawCode=rawCodeList[position]
                 }
             }
         }
 
-        /*if (Utility.isAppOnLine(this@StockReportActivity, object : OnInternetCheckListener {
-                override fun onInternetAvailable() {
-                    getItems(dishHeadCode)
-                }
-            })) {
-            getItems(dishHeadCode)
-        }*/
-
-
+        binding.btnSubmit.setOnClickListener{
+            getStockReport()
+        }
     }
+
+
 
     private fun getItems(dishHeadCode: Int) {
         val jsonObject= JsonObject()
@@ -136,10 +138,10 @@ class StockReportActivity : AppCompatActivity() {
 
     private fun setItems(data: StockSelectItemModel) {
         rawDescription.clear()
-        rawCode.clear()
+        rawCodeList.clear()
         for(item in data.data){
             rawDescription.add(item.rawDesc)
-            rawCode.add(item.rawCode)
+            rawCodeList.add(item.rawCode)
         }
         val aa: ArrayAdapter<*> = ArrayAdapter<Any?>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, rawDescription as List<Any?>)
         aa.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item)
@@ -214,6 +216,37 @@ class StockReportActivity : AppCompatActivity() {
             binding.tvFromDate.text = sdf.format(cal.getTime())
         }
 
+    }
+
+    private fun getStockReport() {
+        val jsonObject= JsonObject()
+        jsonObject.addProperty("startDate", binding.tvFromDate.text.toString())
+        jsonObject.addProperty("endDate", binding.tvTodate.text.toString())
+        jsonObject.addProperty("locationCode", locationCode)
+        jsonObject.addProperty("rawCode", rawCode)
+        jsonObject.addProperty("dishHeadCode", dishHeadCode)
+        jsonObject.addProperty("reportType", 0)
+
+
+        viewModel.getStockReport(jsonObject).observe(this@StockReportActivity) { response ->
+            when (response) {
+                is NetworkResult.Success -> {
+                    if (response.data!!.data.isNotEmpty()) {
+                        binding.rvStockReportList.layoutManager=LinearLayoutManager(this@StockReportActivity)
+                        binding.rvStockReportList.adapter=StockReportAdapter(response.data.data)
+                        binding.rvStockReportList.visibility=View.VISIBLE
+                    } else {
+                        Utility.showToast(this@StockReportActivity, "Data Not Found!")
+                        binding.progressCircular.visibility = View.GONE
+                        binding.rvStockReportList.visibility=View.GONE
+                    }
+                }
+
+                is NetworkResult.Error -> {
+                    Utility.showToast(this@StockReportActivity, response.message.toString())
+                }
+            }
+        }
     }
 
 

@@ -22,6 +22,7 @@ class CafePosViewModel : ViewModel() {
 
     val dishheadLiveData = MutableLiveData<NetworkResult<DishHeadModel>>()
     val stockItemsLiveData = MutableLiveData<NetworkResult<StockSelectItemModel>>()
+    val stockReportLiveData = MutableLiveData<NetworkResult<StockReportModel>>()
 
 
 
@@ -150,6 +151,19 @@ class CafePosViewModel : ViewModel() {
         }
         return stockItemsLiveData
     }
+
+    fun getStockReport(jsonObject: JsonObject): LiveData<NetworkResult<StockReportModel>> {
+        viewModelScope.launch {
+            val result = CafePosRepositry(RetrofitClient.instance).getStockReport(jsonObject)
+            if (result.isSuccessful) {
+                stockReportLiveData.value = NetworkResult.Success(result.body()!!)
+            } else {
+                stockReportLiveData.value = NetworkResult.Error(result.message())
+            }
+        }
+        return stockReportLiveData
+    }
+
 
 
 
