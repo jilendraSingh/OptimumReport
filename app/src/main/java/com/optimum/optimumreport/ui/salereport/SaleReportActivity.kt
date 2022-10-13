@@ -105,9 +105,17 @@ class SaleReportActivity : AppCompatActivity(), OnItemClickListener {
                         binding.progressCircular.visibility = View.GONE
                         binding.rvSaleReportList.visibility = View.VISIBLE
 
+                        var billAmount = 0.0
+                        for (item in response.data.data) {
+                            billAmount += item.billAmount
+                        }
+                        binding.tvTotalAmount.text = billAmount.toString()
+                        binding.llLinearAmountLayout.visibility=View.VISIBLE
+
                     } else {
                         Utility.showToast(this@SaleReportActivity, "Data Not Found!")
                         binding.progressCircular.visibility = View.GONE
+                        binding.llLinearAmountLayout.visibility=View.GONE
                     }
                 }
 

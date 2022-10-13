@@ -70,8 +70,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_sale_report_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/ll_linear_amount_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,4 +133,40 @@
             android:textSize="@dimen/_10sdp" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_linear_amount_layout"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_40sdp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/red_color"
+            android:textStyle="bold"
+            android:text="Total Amount:"/>
+
+        <TextView
+            android:id="@+id/tv_total_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/_10sdp"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/red_color"
+            android:textStyle="bold"
+            android:text="500000"/>
+
+    </LinearLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
