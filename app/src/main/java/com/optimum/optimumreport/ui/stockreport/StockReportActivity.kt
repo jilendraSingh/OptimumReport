@@ -188,13 +188,9 @@ class StockReportActivity : AppCompatActivity() {
             dishheadArray.add(item.dishHeadName)
             dishheadCodeArray.add(item.dishHeadCode)
         }
-
         val customAdapter =
             CustomSpinnerAdapter(this@StockReportActivity, dishheadArray, "Please Select DishHead")
         binding.spDishHead.adapter = customAdapter
-
-        /*val aa: ArrayAdapter<*> = ArrayAdapter<Any?>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, dishheadArray as List<Any?>)
-        aa.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item)*/
     }
 
     fun showDatePicker() {

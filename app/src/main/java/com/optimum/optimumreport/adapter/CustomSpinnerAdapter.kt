@@ -31,7 +31,7 @@ class CustomSpinnerAdapter(val context: Context, val listOfItem: List<String>, v
         if (position == 0) {
             textview.text = title
         } else {
-            textview.text = listOfItem[position]
+            textview.text = listOfItem[position-1]
         }
 
         return view
