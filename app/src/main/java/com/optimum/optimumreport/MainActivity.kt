@@ -104,9 +104,7 @@ class MainActivity : AppCompatActivity() , OnItemClickListener {
 
         } catch (e: Exception) {
             Log.e("optimum", "setUpData: "+e.printStackTrace() )
-
         }
-
     }
 
     private fun setUpReportData(data: ReportModel?) {

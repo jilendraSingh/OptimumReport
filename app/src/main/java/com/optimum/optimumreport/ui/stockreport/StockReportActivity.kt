@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.JsonObject
+import com.optimum.optimumreport.adapter.CustomSpinnerAdapter
+import com.optimum.optimumreport.adapter.StockReportAdapter
 import com.optimum.optimumreport.databinding.ActivityStockReportBinding
 import com.optimum.optimumreport.interfaces.OnInternetCheckListener
 import com.optimum.optimumreport.model.DishHeadModel
@@ -18,11 +20,8 @@ import com.optimum.optimumreport.model.StockSelectItemModel
 import com.optimum.optimumreport.utility.NetworkResult
 import com.optimum.optimumreport.utility.Utility
 import com.optimum.optimumreport.viewmodel.CafePosViewModel
-import com.google.gson.JsonObject
-import com.optimum.optimumreport.adapter.StockReportAdapter
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class StockReportActivity : AppCompatActivity() {
@@ -32,9 +31,9 @@ class StockReportActivity : AppCompatActivity() {
     var cal = Calendar.getInstance()
     var isFromDate = false
     val dishheadArray=ArrayList<String>()
-    val dishheadCodeArray=ArrayList<Int>()
-    var dishHeadCode=0
-    var locationCode=""
+    val dishheadCodeArray = ArrayList<Int>()
+    var dishHeadCode = ""
+    var locationCode = ""
 
     val rawDescription=ArrayList<String>()
     val rawCodeList=ArrayList<String>()
@@ -81,18 +80,20 @@ class StockReportActivity : AppCompatActivity() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.i("CafeReport", "onItemSelected: "+ dishheadCodeArray[position])
-                if(dishheadCodeArray.size!=0){
-                    dishHeadCode=dishheadCodeArray[position]
-                    if (Utility.isAppOnLine(this@StockReportActivity, object : OnInternetCheckListener {
-                            override fun onInternetAvailable() {
-                                getItems(dishHeadCode)
-                            }
-                        })) {
-                        getItems(dishHeadCode)
-                    }
-                }
 
+                if (position == 0) {
+                    dishHeadCode = "please select dishhead"
+                    return
+                }
+                Log.i("CafeReport", "onItemSelected: " + dishheadCodeArray[position])
+                dishHeadCode = dishheadCodeArray[position-1].toString()
+                if (Utility.isAppOnLine(this@StockReportActivity, object : OnInternetCheckListener {
+                        override fun onInternetAvailable() {
+                            getItems(dishHeadCode)
+                        }
+                    })) {
+                    getItems(dishHeadCode)
+                }
             }
 
         }
@@ -101,22 +102,33 @@ class StockReportActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(rawCodeList.size!=0){
-                    Log.i("CafeReport", "rawCode: ="+ rawCodeList[position])
-                    rawCode=rawCodeList[position]
+                if (position == 0) {
+                    rawCode = "please select item"
+                    return
                 }
+                Log.i("CafeReport", "rawCode: =" + rawCodeList[position-1])
+                rawCode = rawCodeList[position-1]
             }
         }
 
-        binding.btnSubmit.setOnClickListener{
+        binding.btnSubmit.setOnClickListener {
+            if (dishHeadCode.contains("please")) {
+                Utility.showToast(this@StockReportActivity, "Please select Dishhead")
+                return@setOnClickListener
+            }
+            if (rawCode.contains("please")) {
+                Utility.showToast(this@StockReportActivity, "Please select Item")
+                return@setOnClickListener
+            }
+
+
             getStockReport()
         }
     }
 
 
-
-    private fun getItems(dishHeadCode: Int) {
-        val jsonObject= JsonObject()
+    private fun getItems(dishHeadCode: String) {
+        val jsonObject = JsonObject()
         jsonObject.addProperty("dishHeadCode", dishHeadCode)
         viewModel.stockItemsList(jsonObject).observe(this@StockReportActivity) { response ->
             when (response) {
@@ -139,13 +151,14 @@ class StockReportActivity : AppCompatActivity() {
     private fun setItems(data: StockSelectItemModel) {
         rawDescription.clear()
         rawCodeList.clear()
-        for(item in data.data){
+        for (item in data.data) {
             rawDescription.add(item.rawDesc)
             rawCodeList.add(item.rawCode)
         }
-        val aa: ArrayAdapter<*> = ArrayAdapter<Any?>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, rawDescription as List<Any?>)
-        aa.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item)
-        binding.spItems.setAdapter(aa)
+
+        val customAdapter =
+            CustomSpinnerAdapter(this@StockReportActivity, rawDescription, "Please Select Items")
+        binding.spItems.adapter = customAdapter
     }
 
     private fun getDishHead() {
@@ -171,13 +184,17 @@ class StockReportActivity : AppCompatActivity() {
     private fun setDishHeadItems(data: DishHeadModel) {
         dishheadArray.clear()
         dishheadCodeArray.clear()
-        for(item in data.data){
+        for (item in data.data) {
             dishheadArray.add(item.dishHeadName)
             dishheadCodeArray.add(item.dishHeadCode)
         }
-        val aa: ArrayAdapter<*> = ArrayAdapter<Any?>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, dishheadArray as List<Any?>)
-        aa.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item)
-        binding.spDishHead.setAdapter(aa)
+
+        val customAdapter =
+            CustomSpinnerAdapter(this@StockReportActivity, dishheadArray, "Please Select DishHead")
+        binding.spDishHead.adapter = customAdapter
+
+        /*val aa: ArrayAdapter<*> = ArrayAdapter<Any?>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, dishheadArray as List<Any?>)
+        aa.setDropDownViewResource(androidx.transition.R.layout.support_simple_spinner_dropdown_item)*/
     }
 
     fun showDatePicker() {
