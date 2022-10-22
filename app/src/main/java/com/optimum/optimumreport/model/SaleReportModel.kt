@@ -14,10 +14,12 @@ data class SaleReportModel(
     val success: String
 ) {
     data class Data(
+        @SerializedName("accName")
+        val accName: String,
         @SerializedName("billAmount")
         val billAmount: Double,
         @SerializedName("billCode")
-        val billCode: Int,
+        val billCode: Double,
         @SerializedName("billDate")
         val billDate: String,
         @SerializedName("billDocNo")
@@ -25,7 +27,7 @@ data class SaleReportModel(
         @SerializedName("billTime")
         val billTime: String,
         @SerializedName("docNo")
-        val docNo: Int,
+        val docNo: Double,
         @SerializedName("locationCode")
         val locationCode: Int,
         @SerializedName("s_BillDate")

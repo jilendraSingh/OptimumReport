@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,8 +27,12 @@ class MainActivity : AppCompatActivity() , OnItemClickListener {
 
     lateinit var binding: ActivityMainBinding
     lateinit var viewModel: CafePosViewModel
-    var locationCodeData = ""
     lateinit var sharedPreferences: SharedPreferences
+    var reportListAdapter: ReportListAdapter? = null
+
+    companion object {
+        var locationCodeData = ""
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,7 +103,8 @@ class MainActivity : AppCompatActivity() , OnItemClickListener {
             binding.rvOutletList.layoutManager =
                 LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
             binding.rvOutletList.isNestedScrollingEnabled = true
-            binding.rvOutletList.adapter = OutLetAdapter(data?.data!!.locations, this)
+            binding.rvOutletList.adapter =
+                OutLetAdapter(this@MainActivity, data?.data!!.locations, this)
 
         } catch (e: Exception) {
             Log.e("optimum", "setUpData: "+e.printStackTrace() )
@@ -108,17 +112,19 @@ class MainActivity : AppCompatActivity() , OnItemClickListener {
     }
 
     private fun setUpReportData(data: ReportModel?) {
-
+        reportListAdapter = ReportListAdapter(this@MainActivity, data!!.data)
         binding.rvReportTypeList.layoutManager =
             LinearLayoutManager(this@MainActivity)
         binding.rvReportTypeList.isNestedScrollingEnabled = true
-        binding.rvReportTypeList.adapter =
-            ReportListAdapter(this@MainActivity, data!!.data, locationCodeData)
-        binding.reportType.visibility= View.VISIBLE
+        binding.rvReportTypeList.adapter = reportListAdapter
+        binding.reportType.visibility = View.VISIBLE
 
     }
 
     override fun onItemClick(position: Int, locationCode: String) {
+        Log.e("TAG", "onItemClick: " + locationCode)
         locationCodeData = locationCode
     }
+
+
 }

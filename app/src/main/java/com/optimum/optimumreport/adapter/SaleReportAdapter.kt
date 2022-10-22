@@ -28,13 +28,13 @@ class SaleReportAdapter(val listOfSaleData: List<SaleReportModel.Data>, val list
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item: SaleReportModel.Data = listOfSaleData[position]
-        holder.binding.tvDate.text = item.sBillDate
-        holder.binding.tvTime.text = item.billTime
+        holder.binding.tvDate.text = item.sBillDate + " " + item.billTime
+        holder.binding.tvAccount.text = item.accName
         holder.binding.tvBillAmount.text = item.billAmount.toString()
-        holder.binding.tvBillNo.text = item.docNo.toString()
+        holder.binding.tvBillNo.text = (item.docNo.toInt()).toString()
 
-        holder.itemView.setOnClickListener{
-            listener.onItemClick(position,item.billCode.toString())
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(position, item.billCode.toString())
         }
     }
 
