@@ -18,6 +18,8 @@ import com.optimum.optimumreport.interfaces.OnItemClickListener
 import com.optimum.optimumreport.utility.NetworkResult
 import com.optimum.optimumreport.utility.Utility
 import com.optimum.optimumreport.viewmodel.CafePosViewModel
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -109,7 +111,7 @@ class SaleReportActivity : AppCompatActivity(), OnItemClickListener {
                         for (item in response.data.data) {
                             billAmount += item.billAmount
                         }
-                        binding.tvTotalAmount.text = billAmount.toString()
+                        binding.tvTotalAmount.text =roundOffDecimal(billAmount).toString()
                         binding.llLinearAmountLayout.visibility=View.VISIBLE
 
                     } else {
@@ -156,6 +158,12 @@ class SaleReportActivity : AppCompatActivity(), OnItemClickListener {
             binding.tvFromDate.text = sdf.format(cal.getTime())
         }
 
+    }
+
+    fun roundOffDecimal(number: Double): Double {
+        val df = DecimalFormat("#.##")
+        df.roundingMode = RoundingMode.CEILING
+        return df.format(number).toDouble()
     }
 
 }

@@ -19,7 +19,7 @@ data class SaleReportModel(
         @SerializedName("billAmount")
         val billAmount: Double,
         @SerializedName("billCode")
-        val billCode: Double,
+        val billCode: Int,
         @SerializedName("billDate")
         val billDate: String,
         @SerializedName("billDocNo")

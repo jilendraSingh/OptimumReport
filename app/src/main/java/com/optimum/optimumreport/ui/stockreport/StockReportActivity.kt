@@ -117,8 +117,9 @@ class StockReportActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             if (rawCode.contains("please")) {
-                Utility.showToast(this@StockReportActivity, "Please select Item")
-                return@setOnClickListener
+                /*Utility.showToast(this@StockReportActivity, "Please select Item")
+                return@setOnClickListener*/
+                rawCode = "null"
             }
 
 
@@ -130,6 +131,7 @@ class StockReportActivity : AppCompatActivity() {
     private fun getItems(dishHeadCode: String) {
         val jsonObject = JsonObject()
         jsonObject.addProperty("dishHeadCode", dishHeadCode)
+        jsonObject.addProperty("locationCode", locationCode)
         viewModel.stockItemsList(jsonObject).observe(this@StockReportActivity) { response ->
             when (response) {
                 is NetworkResult.Success -> {
@@ -162,7 +164,7 @@ class StockReportActivity : AppCompatActivity() {
     }
 
     private fun getDishHead() {
-        viewModel.getDishHead().observe(this@StockReportActivity) { response ->
+        viewModel.getDishHead(locationCode.toInt()).observe(this@StockReportActivity) { response ->
             when (response) {
                 is NetworkResult.Success -> {
                     if (response.data!!.data.isNotEmpty()) {

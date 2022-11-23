@@ -55,10 +55,10 @@ interface ApiInterface {
         @Path("usercode") locationcode: String
     ): Response<ReportModel>
 
+
     @Headers("Content-Type: application/json")
-    @GET("http://optimum.co.in/cafeposapp/Master/getdishheads")
-    suspend fun getDishHead(
-    ): Response<DishHeadModel>
+    @GET("http://optimum.co.in/cafeposapp/Master/getdishheads/{locationcode}")
+    suspend fun getDishHead(@Path("locationcode") locationcode: Int): Response<DishHeadModel>
 
 
 

@@ -126,11 +126,10 @@ class CafePosViewModel : ViewModel() {
         return reportLivatData
     }
 
-    fun getDishHead(
-    ): LiveData<NetworkResult<DishHeadModel>> {
+    fun getDishHead(locationCode:Int): LiveData<NetworkResult<DishHeadModel>> {
         viewModelScope.launch {
             val result =
-                CafePosRepositry(RetrofitClient.instance).getDishHead()
+                CafePosRepositry(RetrofitClient.instance).getDishHead(locationCode)
             if (result.isSuccessful) {
                 dishheadLiveData.value = NetworkResult.Success(result.body()!!)
             } else {

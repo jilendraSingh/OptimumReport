@@ -10,6 +10,7 @@ import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.JsonObject
 import com.optimum.optimumreport.adapter.PurchaseReportAdapter
 import com.optimum.optimumreport.databinding.ActivityPurchaseReportBinding
 import com.optimum.optimumreport.interfaces.OnInternetCheckListener
@@ -17,7 +18,8 @@ import com.optimum.optimumreport.interfaces.OnItemClickListener
 import com.optimum.optimumreport.utility.NetworkResult
 import com.optimum.optimumreport.utility.Utility
 import com.optimum.optimumreport.viewmodel.CafePosViewModel
-import com.google.gson.JsonObject
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -97,7 +99,6 @@ class PurchaseReportActivity : AppCompatActivity(), OnItemClickListener {
         jsonObject.addProperty("endDate", binding.tvTodate.text.toString())
         viewModel.getPurchaseData(jsonObject).observe(this@PurchaseReportActivity) { response ->
             when (response) {
-
                 is NetworkResult.Success -> {
                     if (response.data!!.data.isNotEmpty()) {
                         binding.rvSaleReportList.layoutManager =
@@ -112,8 +113,8 @@ class PurchaseReportActivity : AppCompatActivity(), OnItemClickListener {
                         for (item in response.data.data) {
                             billAmount += item.billamt
                         }
-                        binding.tvTotalAmount.text = billAmount.toString()
-                        binding.llLinearAmountLayout.visibility=View.VISIBLE
+                        binding.tvTotalAmount.text = roundOffDecimal(billAmount).toString()
+                        binding.llLinearAmountLayout.visibility = View.VISIBLE
 
                     } else {
                         Utility.showToast(this@PurchaseReportActivity, "Data Not Found!")
@@ -132,10 +133,9 @@ class PurchaseReportActivity : AppCompatActivity(), OnItemClickListener {
 
     override fun onItemClick(position: Int, data: String) {
         val intent = Intent(this@PurchaseReportActivity, PurchaseReportDetailActivity::class.java)
-        intent.putExtra("LOCATION_CODE", "8")
+        intent.putExtra("LOCATION_CODE", locationCode)
         intent.putExtra("BILL_CODE", data)
         startActivity(intent)
-
     }
 
     val dateSetListener = object : DatePickerDialog.OnDateSetListener {
@@ -160,5 +160,11 @@ class PurchaseReportActivity : AppCompatActivity(), OnItemClickListener {
             binding.tvFromDate.text = sdf.format(cal.getTime())
         }
 
+    }
+
+    fun roundOffDecimal(number: Double): Double {
+        val df = DecimalFormat("#.##")
+        df.roundingMode = RoundingMode.CEILING
+        return df.format(number).toDouble()
     }
 }

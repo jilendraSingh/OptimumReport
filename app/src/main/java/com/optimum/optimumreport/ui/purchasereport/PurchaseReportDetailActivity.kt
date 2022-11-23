@@ -1,6 +1,7 @@
 package com.optimum.optimumreport.ui.purchasereport
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,8 @@ import com.optimum.optimumreport.interfaces.OnInternetCheckListener
 import com.optimum.optimumreport.utility.NetworkResult
 import com.optimum.optimumreport.utility.Utility
 import com.optimum.optimumreport.viewmodel.CafePosViewModel
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class PurchaseReportDetailActivity : AppCompatActivity() {
 
@@ -44,6 +47,7 @@ class PurchaseReportDetailActivity : AppCompatActivity() {
     }
 
     private fun getPurchaseReportDetail() {
+        Log.e("TAG", "getPurchaseReportDetail: "+locationCode+ ", "+billCode )
         viewModel.getPurchseReportDetail(locationCode, billCode)
             .observe(this@PurchaseReportDetailActivity) { response ->
                 when (response) {
@@ -62,4 +66,6 @@ class PurchaseReportDetailActivity : AppCompatActivity() {
                 }
             }
     }
+
+
 }

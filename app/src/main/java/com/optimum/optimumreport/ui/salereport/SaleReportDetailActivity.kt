@@ -1,6 +1,7 @@
 package com.optimum.optimumreport.ui.salereport
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,7 @@ class SaleReportDetailActivity : AppCompatActivity() {
     }
 
     private fun getSaleReportDetail() {
+        Log.e("TAG", "getSaleReportDetail: "+locationCode +" "+billCode )
         viewModel.getSaleReportDetail(locationCode, billCode)
             .observe(this@SaleReportDetailActivity) { response ->
                 when (response) {
